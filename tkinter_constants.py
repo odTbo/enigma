@@ -1,4 +1,4 @@
-FONT = ("Calibri", 12, "normal")
+FONT = ("Calibri", 10, "normal")
 
 # ADD/EDIT PERSON FORM
 FORM_ENTRY_PADX = (30, 0)

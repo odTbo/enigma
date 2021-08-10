@@ -54,6 +54,10 @@ def form_window():
     socials_entry = Entry(top, width=FORM_ENTRY_WDTH)
     socials_entry.grid(row=17, column=1, padx=FORM_ENTRY_PADX, pady=FORM_ENTRY_PADY)
 
+    # ------ Buttons
+    add_btn = Button(top, text="Add", width=20, font=FONT)
+    add_btn.grid(row=18, column=1)
+
     top.mainloop()
 
 
