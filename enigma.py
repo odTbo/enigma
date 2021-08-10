@@ -54,7 +54,7 @@ def form_window():
     socials_entry = Entry(top, width=FORM_ENTRY_WDTH)
     socials_entry.grid(row=17, column=1, padx=FORM_ENTRY_PADX, pady=FORM_ENTRY_PADY)
 
-    # ------ Buttons
+    # ------------------- Buttons ---------------------- #
     add_btn = Button(top, text="Add", width=20, font=FONT)
     add_btn.grid(row=18, column=1)
 
@@ -67,7 +67,7 @@ def search_window():
     top.config(padx=40, pady=25)
     top.title("Search")
 
-    # -------------------- Labels -------------------------- #
+    # -------------------- Labels ------------------------- #
     desc = Label(top, text="Search by Name/E-mail", font=FONT)
     desc.grid(row=0, column=0, columnspan=2)
     name_lbl = Label(top, text="Name: ", font=FONT)
