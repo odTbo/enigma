@@ -1,11 +1,23 @@
 from tkinter import *
 from tkinter_constants import *
+import sqlalchemy
+from sqlalchemy import create_engine
+
+# TODO SQL database
+# ----- DOCS
+# ----- https://docs.sqlalchemy.org/en/14/tutorial/engine.html
+engine = create_engine("sqlite:///enigma.db", echo=True, future=True)
 
 root = Tk()
 
 root.config(padx=55, pady=55)
 root.eval('tk::PlaceWindow . center')
 root.title("Enigma")
+
+
+# Insert Data into DB
+def insert_entry():
+    pass
 
 
 # Add/edit person form
@@ -82,8 +94,21 @@ def search_window():
     email_entry.grid(row=2, column=1, pady=5)
 
     # ---------------------- Buttons -------------------- #
-    search = Button(top, text="Search", width=20, font=FONT) #TODO command
+    search = Button(top, text="Search", width=20, command=search_result_window, font=FONT) #TODO command
     search.grid(row=3, column=0, columnspan=2, pady=20)
+
+    top.mainloop()
+
+
+# Search result window
+def search_result_window():
+    top = Toplevel(root)
+    top.config(padx=40, pady=25)
+    top.title("Result")
+
+    # ------- Labels
+    test = Label(top, text="Testing")
+    test.grid(row=0, column=0)
 
     top.mainloop()
 
