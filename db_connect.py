@@ -10,6 +10,12 @@ VALUES
 """
 
 # SELECT PERSON QUERY
+select_all_query = """
+SELECT
+ *
+FROM
+  people
+"""
 select_email_query = """
 SELECT
  *
@@ -93,11 +99,14 @@ def execute_query(connection, query, params=None):
 
 
 # EXECUTE READ QUERY
-def execute_read_query(connection, query, params):
+def execute_read_query(connection, query, params=None):
     cursor = connection.cursor()
     result = None
     try:
-        cursor.execute(query, params)
+        if params:
+            cursor.execute(query, params)
+        else:
+            cursor.execute(query)
         result = cursor.fetchall()
         return result
     except Error as e:

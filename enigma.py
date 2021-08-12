@@ -148,6 +148,7 @@ def search_window():
                 top.destroy()
                 top.update()
                 form_window(to_edit=data[0])
+                return
             else:
                 messagebox.showinfo(title="Oops!", message="No matches found.")
         if email_entry.get():
@@ -159,6 +160,7 @@ def search_window():
                 top.destroy()
                 top.update()
                 form_window(to_edit=data[0])
+                return
             else:
                 messagebox.showinfo(title="Oops!", message="No matches found.")
 
