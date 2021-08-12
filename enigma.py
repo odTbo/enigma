@@ -61,17 +61,6 @@ def form_window(to_edit=None):
     socials_entry = Entry(top, width=FORM_ENTRY_WDTH)
     socials_entry.grid(row=17, column=1, padx=FORM_ENTRY_PADX, pady=FORM_ENTRY_PADY)
 
-    def clear_form():
-        email_entry.delete(0, END)
-        name_entry.delete(0, END)
-        surname_entry.delete(0, END)
-        birthday_entry.delete(0, END)
-        nameday_entry.delete(0, END)
-        address_entry.delete(0, END)
-        interests_entry.delete(0, END)
-        phone_entry.delete(0, END)
-        socials_entry.delete(0, END)
-
     # Prepopulate the form if its edit
     if to_edit:
         name_entry.insert(0, to_edit[1])
@@ -83,6 +72,18 @@ def form_window(to_edit=None):
         interests_entry.insert(0, to_edit[7])
         phone_entry.insert(0, to_edit[8])
         socials_entry.insert(0, to_edit[9])
+
+    # Clears form entries
+    def clear_form():
+        email_entry.delete(0, END)
+        name_entry.delete(0, END)
+        surname_entry.delete(0, END)
+        birthday_entry.delete(0, END)
+        nameday_entry.delete(0, END)
+        address_entry.delete(0, END)
+        interests_entry.delete(0, END)
+        phone_entry.delete(0, END)
+        socials_entry.delete(0, END)
 
     # Insert Data into DB
     def insert_entry():
