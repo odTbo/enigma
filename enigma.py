@@ -61,6 +61,18 @@ def form_window(to_edit=None):
     socials_entry = Entry(top, width=FORM_ENTRY_WDTH)
     socials_entry.grid(row=17, column=1, padx=FORM_ENTRY_PADX, pady=FORM_ENTRY_PADY)
 
+    def clear_form():
+        email_entry.delete(0, END)
+        name_entry.delete(0, END)
+        surname_entry.delete(0, END)
+        birthday_entry.delete(0, END)
+        nameday_entry.delete(0, END)
+        address_entry.delete(0, END)
+        interests_entry.delete(0, END)
+        phone_entry.delete(0, END)
+        socials_entry.delete(0, END)
+
+    # Prepopulate the form if its edit
     if to_edit:
         name_entry.insert(0, to_edit[1])
         surname_entry.insert(0, to_edit[2])
@@ -84,30 +96,16 @@ def form_window(to_edit=None):
         phone = phone_entry.get()
         socials = socials_entry.get()
 
+        # Update query
         if to_edit:
             params = (name, surname, email, birthday, nameday, address, interests, phone, socials, to_edit[0])
             if execute_query(connection, update_query, params):
-                email_entry.delete(0, END)
-                name_entry.delete(0, END)
-                surname_entry.delete(0, END)
-                birthday_entry.delete(0, END)
-                nameday_entry.delete(0, END)
-                address_entry.delete(0, END)
-                interests_entry.delete(0, END)
-                phone_entry.delete(0, END)
-                socials_entry.delete(0, END)
+                clear_form()
+        # New entry insert query
         else:
             params = (name, surname, email, birthday, nameday, address, interests, phone, socials)
             if execute_query(connection, create_person, params):
-                email_entry.delete(0, END)
-                name_entry.delete(0, END)
-                surname_entry.delete(0, END)
-                birthday_entry.delete(0, END)
-                nameday_entry.delete(0, END)
-                address_entry.delete(0, END)
-                interests_entry.delete(0, END)
-                phone_entry.delete(0, END)
-                socials_entry.delete(0, END)
+                clear_form()
 
     # ------------------- Buttons ---------------------- #
     add_btn = Button(top, text="Add", width=20, font=FONT, command=insert_entry)
