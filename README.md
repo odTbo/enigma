@@ -1,2 +1,2 @@
-# enigma
+# <WIP> enigma <WIP>
 <p>Simple SQLite database for social circle with python based UI for adding/editing database entries.</p>
