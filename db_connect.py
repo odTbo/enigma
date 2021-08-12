@@ -28,8 +28,6 @@ def execute_query(connection, query, params=None):
         print(f"The error '{e}' occurred")
 
 
-connection = create_connection(db_path)
-
 create_data_table = """
 CREATE TABLE IF NOT EXISTS people (
   id INTEGER PRIMARY KEY AUTOINCREMENT,

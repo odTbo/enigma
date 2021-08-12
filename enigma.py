@@ -2,7 +2,10 @@ from tkinter import *
 from tkinter_constants import *
 from db_connect import *
 
-
+# Establish DB connection
+connection = create_connection()
+# Create DB Table
+execute_query(connection, create_data_table)
 
 root = Tk()
 
