@@ -1,11 +1,9 @@
 import sqlite3
 from sqlite3 import Error
 
-db_path = "enigma.db"
-
 
 # CREATE/ESTABLISH CONNECTION TO DB
-def create_connection(path):
+def create_connection(path="enigma.db"):
     connection = None
     try:
         connection = sqlite3.connect(path)
@@ -46,25 +44,28 @@ CREATE TABLE IF NOT EXISTS people (
 );
 """
 
-# CREATE TABLE
-execute_query(connection, create_data_table)
+if __name__ == "__main__":
+    # CONNECT TO/CREATE DATABASE
+    connection = create_connection()
+    # CREATE TABLE
+    execute_query(connection, create_data_table)
 
-name = 'First Name'
-surname = 'Last Name'
-email = 'example@gmail.com'
-birthday = '24/12'
-address = 'Address 12, Test City'
-interests = 'Interests go here.'
-phone = '0900666666'
-socials = 'Socials go here.'
-
-
-create_person = """
-INSERT INTO
-  people (name, surname, email, birthday, address, interests, phone, socials)
-VALUES
-  (?, ?, ?, ?, ?, ?, ?, ?);
-"""
-params = (name, surname, email, birthday, address, interests, phone, socials)
-
-execute_query(connection, create_person, params)
+# name = 'First Name'
+# surname = 'Last Name'
+# email = 'example@gmail.com'
+# birthday = '24/12'
+# address = 'Address 12, Test City'
+# interests = 'Interests go here.'
+# phone = '0900666666'
+# socials = 'Socials go here.'
+#
+#
+# create_person = """
+# INSERT INTO
+#   people (name, surname, email, birthday, address, interests, phone, socials)
+# VALUES
+#   (?, ?, ?, ?, ?, ?, ?, ?);
+# """
+# params = (name, surname, email, birthday, address, interests, phone, socials)
+#
+# execute_query(connection, create_person, params)

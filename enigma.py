@@ -1,13 +1,8 @@
 from tkinter import *
 from tkinter_constants import *
-import sqlalchemy
-from sqlalchemy import create_engine
+from db_connect import *
 
-# TODO SQL database
-# ----- DOCS
-# ----- https://docs.sqlalchemy.org/en/14/tutorial/engine.html
-# engine = create_engine("sqlite:///enigma.db", echo=True, future=True)
-engine = create_engine("sqlite+pysqlite:///:memory:", echo=True, future=True)
+
 
 root = Tk()
 
