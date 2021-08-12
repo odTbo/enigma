@@ -6,7 +6,8 @@ from sqlalchemy import create_engine
 # TODO SQL database
 # ----- DOCS
 # ----- https://docs.sqlalchemy.org/en/14/tutorial/engine.html
-engine = create_engine("sqlite:///enigma.db", echo=True, future=True)
+# engine = create_engine("sqlite:///enigma.db", echo=True, future=True)
+engine = create_engine("sqlite+pysqlite:///:memory:", echo=True, future=True)
 
 root = Tk()
 
