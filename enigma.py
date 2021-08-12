@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from tkinter_constants import *
 from db_connect import *
 
@@ -15,18 +16,18 @@ root.title("Enigma")
 
 
 # Add/edit person form
-def form_window():
+def form_window(to_edit=None):
     top = Toplevel(root)
     top.config(padx=30, pady=30)
     top.title("Form")
 
     # ------------------ Labels ----------------- #
-    email_lbl = Label(top, text="E-mail", font=FONT)
-    email_lbl.grid(row=0, column=0, columnspan=2, sticky=W)
     name_lbl = Label(top, text="Name", font=FONT)
-    name_lbl.grid(row=2, column=0, columnspan=2, sticky=W)
+    name_lbl.grid(row=0, column=0, columnspan=2, sticky=W)
     surname_lbl = Label(top, text="Surname", font=FONT)
-    surname_lbl.grid(row=4, column=0, columnspan=2, sticky=W)
+    surname_lbl.grid(row=2, column=0, columnspan=2, sticky=W)
+    email_lbl = Label(top, text="E-mail", font=FONT)
+    email_lbl.grid(row=4, column=0, columnspan=2, sticky=W)
     birthday_lbl = Label(top, text="Birthday (dd/mm)", font=FONT)
     birthday_lbl.grid(row=6, column=0, columnspan=2, sticky=W)
     nameday_lbl = Label(top, text="Nameday (dd/mm)", font=FONT)
@@ -41,12 +42,12 @@ def form_window():
     socials_lbl.grid(row=16, column=0, columnspan=2, sticky=W)
 
     # ---------------- Entries ------------------ #
-    email_entry = Entry(top, width=FORM_ENTRY_WDTH)
-    email_entry.grid(row=1, column=1, padx=FORM_ENTRY_PADX, pady=FORM_ENTRY_PADY)
     name_entry = Entry(top, width=FORM_ENTRY_WDTH)
-    name_entry.grid(row=3, column=1, padx=FORM_ENTRY_PADX, pady=FORM_ENTRY_PADY)
+    name_entry.grid(row=1, column=1, padx=FORM_ENTRY_PADX, pady=FORM_ENTRY_PADY)
     surname_entry = Entry(top, width=FORM_ENTRY_WDTH)
-    surname_entry.grid(row=5, column=1, padx=FORM_ENTRY_PADX, pady=FORM_ENTRY_PADY)
+    surname_entry.grid(row=3, column=1, padx=FORM_ENTRY_PADX, pady=FORM_ENTRY_PADY)
+    email_entry = Entry(top, width=FORM_ENTRY_WDTH)
+    email_entry.grid(row=5, column=1, padx=FORM_ENTRY_PADX, pady=FORM_ENTRY_PADY)
     birthday_entry = Entry(top, width=FORM_ENTRY_WDTH)
     birthday_entry.grid(row=7, column=1, padx=FORM_ENTRY_PADX, pady=FORM_ENTRY_PADY)
     nameday_entry = Entry(top, width=FORM_ENTRY_WDTH)
@@ -60,11 +61,22 @@ def form_window():
     socials_entry = Entry(top, width=FORM_ENTRY_WDTH)
     socials_entry.grid(row=17, column=1, padx=FORM_ENTRY_PADX, pady=FORM_ENTRY_PADY)
 
+    if to_edit:
+        name_entry.insert(0, to_edit[1])
+        surname_entry.insert(0, to_edit[2])
+        email_entry.insert(0, to_edit[3])
+        birthday_entry.insert(0, to_edit[4])
+        nameday_entry.insert(0, to_edit[5])
+        address_entry.insert(0, to_edit[6])
+        interests_entry.insert(0, to_edit[7])
+        phone_entry.insert(0, to_edit[8])
+        socials_entry.insert(0, to_edit[9])
+
     # Insert Data into DB
     def insert_entry():
-        email = email_entry.get()
         name = name_entry.get()
         surname = surname_entry.get()
+        email = email_entry.get()
         birthday = birthday_entry.get()
         nameday = nameday_entry.get()
         address = address_entry.get()
@@ -72,18 +84,30 @@ def form_window():
         phone = phone_entry.get()
         socials = socials_entry.get()
 
-        params = (name, surname, email, birthday, nameday, address, interests, phone, socials)
-
-        if execute_query(connection, create_person, params):
-            email_entry.delete(0, END)
-            name_entry.delete(0, END)
-            surname_entry.delete(0, END)
-            birthday_entry.delete(0, END)
-            nameday_entry.delete(0, END)
-            address_entry.delete(0, END)
-            interests_entry.delete(0, END)
-            phone_entry.delete(0, END)
-            socials_entry.delete(0, END)
+        if to_edit:
+            params = (name, surname, email, birthday, nameday, address, interests, phone, socials, to_edit[0])
+            if execute_query(connection, update_query, params):
+                email_entry.delete(0, END)
+                name_entry.delete(0, END)
+                surname_entry.delete(0, END)
+                birthday_entry.delete(0, END)
+                nameday_entry.delete(0, END)
+                address_entry.delete(0, END)
+                interests_entry.delete(0, END)
+                phone_entry.delete(0, END)
+                socials_entry.delete(0, END)
+        else:
+            params = (name, surname, email, birthday, nameday, address, interests, phone, socials)
+            if execute_query(connection, create_person, params):
+                email_entry.delete(0, END)
+                name_entry.delete(0, END)
+                surname_entry.delete(0, END)
+                birthday_entry.delete(0, END)
+                nameday_entry.delete(0, END)
+                address_entry.delete(0, END)
+                interests_entry.delete(0, END)
+                phone_entry.delete(0, END)
+                socials_entry.delete(0, END)
 
     # ------------------- Buttons ---------------------- #
     add_btn = Button(top, text="Add", width=20, font=FONT, command=insert_entry)
@@ -114,27 +138,34 @@ def search_window():
 
     # Search Function
     def search_for():
-        email = email_entry.get()
-        params = (email,)
-        data = execute_read_query(connection, select_query, params)
-        print(data)
+        # try:
+        if name_entry.get():
+            full_name = name_entry.get().split(" ")
+            full_name = [name.title() for name in full_name]
+            params = tuple(full_name)
+            data = execute_read_query(connection, select_name_query, params)
+            if data:
+                print(data)
+                top.destroy()
+                top.update()
+                form_window(to_edit=data[0])
+            else:
+                messagebox.showinfo(title="Oops!", message="No matches found.")
+        if email_entry.get():
+            email = email_entry.get()
+            params = (email,)
+            data = execute_read_query(connection, select_email_query, params)
+            if data:
+                print(data)
+                top.destroy()
+                top.update()
+                form_window(to_edit=data[0])
+            else:
+                messagebox.showinfo(title="Oops!", message="No matches found.")
 
-    # ---------------------- Buttons -------------------- #
-    search = Button(top, text="Search", width=20, command=search_for, font=FONT) #TODO command
+    # ------------------------------ Buttons -------------------------------- #
+    search = Button(top, text="Search", width=20, command=search_for, font=FONT)
     search.grid(row=3, column=0, columnspan=2, pady=20)
-
-    top.mainloop()
-
-
-# Search result window
-def search_result_window():
-    top = Toplevel(root)
-    top.config(padx=40, pady=25)
-    top.title("Result")
-
-    # ------- Labels
-    test = Label(top, text="Testing")
-    test.grid(row=0, column=0)
 
     top.mainloop()
 
