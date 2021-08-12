@@ -108,7 +108,7 @@ def form_window(to_edit=None):
             if execute_query(connection, create_person, params):
                 clear_form()
 
-    # ------------------- Buttons ---------------------- #
+    # ------------------------------ Buttons -------------------------------- #
     add_btn = Button(top, text="Add", width=20, font=FONT, command=insert_entry)
     add_btn.grid(row=18, column=1)
 
