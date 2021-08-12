@@ -24,9 +24,18 @@ def execute_query(connection, query, params=None):
             cursor.execute(query)
         connection.commit()
         print("Query executed successfully")
+        return True
     except Error as e:
         print(f"The error '{e}' occurred")
+        return False
 
+
+create_person = """
+INSERT INTO
+  people (name, surname, email, birthday, nameday, address, interests, phone, socials)
+VALUES
+  (?, ?, ?, ?, ?, ?, ?, ?, ?);
+"""
 
 create_data_table = """
 CREATE TABLE IF NOT EXISTS people (
@@ -35,6 +44,7 @@ CREATE TABLE IF NOT EXISTS people (
   surname TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
   birthday TEXT NOT NULL,
+  nameday TEXT,
   address TEXT,
   interests TEXT,
   phone TEXT UNIQUE,
@@ -48,22 +58,8 @@ if __name__ == "__main__":
     # CREATE TABLE
     execute_query(connection, create_data_table)
 
-# name = 'First Name'
-# surname = 'Last Name'
-# email = 'example@gmail.com'
-# birthday = '24/12'
-# address = 'Address 12, Test City'
-# interests = 'Interests go here.'
-# phone = '0900666666'
-# socials = 'Socials go here.'
-#
-#
-# create_person = """
-# INSERT INTO
-#   people (name, surname, email, birthday, address, interests, phone, socials)
-# VALUES
-#   (?, ?, ?, ?, ?, ?, ?, ?);
-# """
+
+
 # params = (name, surname, email, birthday, address, interests, phone, socials)
 #
 # execute_query(connection, create_person, params)

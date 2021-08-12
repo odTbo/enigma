@@ -14,11 +14,6 @@ root.eval('tk::PlaceWindow . center')
 root.title("Enigma")
 
 
-# Insert Data into DB
-def insert_entry():
-    pass
-
-
 # Add/edit person form
 def form_window():
     top = Toplevel(root)
@@ -65,8 +60,33 @@ def form_window():
     socials_entry = Entry(top, width=FORM_ENTRY_WDTH)
     socials_entry.grid(row=17, column=1, padx=FORM_ENTRY_PADX, pady=FORM_ENTRY_PADY)
 
+    # Insert Data into DB
+    def insert_entry():
+        email = email_entry.get()
+        name = name_entry.get()
+        surname = surname_entry.get()
+        birthday = birthday_entry.get()
+        nameday = nameday_entry.get()
+        address = address_entry.get()
+        interests = interests_entry.get()
+        phone = phone_entry.get()
+        socials = socials_entry.get()
+
+        params = (name, surname, email, birthday, nameday, address, interests, phone, socials)
+
+        if execute_query(connection, create_person, params):
+            email_entry.delete(0, END)
+            name_entry.delete(0, END)
+            surname_entry.delete(0, END)
+            birthday_entry.delete(0, END)
+            nameday_entry.delete(0, END)
+            address_entry.delete(0, END)
+            interests_entry.delete(0, END)
+            phone_entry.delete(0, END)
+            socials_entry.delete(0, END)
+
     # ------------------- Buttons ---------------------- #
-    add_btn = Button(top, text="Add", width=20, font=FONT)
+    add_btn = Button(top, text="Add", width=20, font=FONT, command=insert_entry)
     add_btn.grid(row=18, column=1)
 
     top.mainloop()
