@@ -14,7 +14,7 @@ def create_connection(path="enigma.db"):
     return connection
 
 
-# EXECUTE QUERY
+# EXECUTE WRITE QUERY
 def execute_query(connection, query, params=None):
     cursor = connection.cursor()
     try:
@@ -30,6 +30,19 @@ def execute_query(connection, query, params=None):
         return False
 
 
+# EXECUTE READ QUERY
+def execute_read_query(connection, query, params):
+    cursor = connection.cursor()
+    result = None
+    try:
+        cursor.execute(query, params)
+        result = cursor.fetchall()
+        return result
+    except Error as e:
+        print(f"The error '{e}' occurred")
+
+
+# INSERT PERSON ENTRY QUERY
 create_person = """
 INSERT INTO
   people (name, surname, email, birthday, nameday, address, interests, phone, socials)
@@ -37,6 +50,17 @@ VALUES
   (?, ?, ?, ?, ?, ?, ?, ?, ?);
 """
 
+# SELECT PERSON QUERY
+select_query = """
+SELECT
+ *
+FROM
+  people
+WHERE
+  people.email = ?
+"""
+
+# CREATE TABLE QUERY
 create_data_table = """
 CREATE TABLE IF NOT EXISTS people (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -57,9 +81,3 @@ if __name__ == "__main__":
     connection = create_connection()
     # CREATE TABLE
     execute_query(connection, create_data_table)
-
-
-
-# params = (name, surname, email, birthday, address, interests, phone, socials)
-#
-# execute_query(connection, create_person, params)

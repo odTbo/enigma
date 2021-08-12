@@ -112,8 +112,15 @@ def search_window():
     email_entry = Entry(top, width=40)
     email_entry.grid(row=2, column=1, pady=5)
 
+    # Search Function
+    def search_for():
+        email = email_entry.get()
+        params = (email,)
+        data = execute_read_query(connection, select_query, params)
+        print(data)
+
     # ---------------------- Buttons -------------------- #
-    search = Button(top, text="Search", width=20, command=search_result_window, font=FONT) #TODO command
+    search = Button(top, text="Search", width=20, command=search_for, font=FONT) #TODO command
     search.grid(row=3, column=0, columnspan=2, pady=20)
 
     top.mainloop()
