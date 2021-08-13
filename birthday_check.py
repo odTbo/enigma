@@ -15,10 +15,10 @@ for person_data in data:
     birthday = person_data[4]
     nameday = person_data[5]
     if birthday == date:
-        print(f"Today is {date} and {full_name} has his birthday.")
+        print(f"Today is {date} and {full_name} has his birthday.") # TODO SEND EMAIL
         no_tasks = False
     if nameday == date:
-        print(f"Today is {date} and {full_name} has his nameday.")
+        print(f"Today is {date} and {full_name} has his nameday.") # TODO SEND EMAIL
         no_tasks = False
 
 
