@@ -136,6 +136,7 @@ def search_window():
     email_entry.grid(row=2, column=1, pady=5)
 
     # Search Function
+    # TODO Clean up the logic
     def search_for():
         # try:
         if name_entry.get():
