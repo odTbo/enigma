@@ -14,8 +14,5 @@ for person_data in data:
         ig_name = ig_name.group().split(":")[1][:-1]
         instagram_names.append(ig_name)
 
-if len(instagram_names) == 0:
-    print("No IG accounts found.")
-else:
-    for name in instagram_names:
-        print(name)
+if len(instagram_names) != 0:
+    pass
