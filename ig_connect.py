@@ -3,6 +3,8 @@ import codecs
 import datetime
 import time
 from os import path, getenv
+from db_connect import *
+import re
 import logging
 import argparse
 from dotenv import load_dotenv
@@ -25,13 +27,14 @@ except ImportError:
 
 
 class Instagram:
-    def __init__(self, usernames=["vladimirpolak"]):
+    def __init__(self,):
         self.username = getenv("IG_USERNAME")
         self.password = getenv("IG_PASSWORD")
         self.settings_file_path = "ig_credentials.json"
-        self.users = usernames
+        self.users = []
 
     def run(self):
+        self.get_users()
         self.login()
         for user in self.users:
             self.follow_user(user)
@@ -86,6 +89,17 @@ class Instagram:
         cookie_expiry = self.api.cookie_jar.auth_expires
         print('Cookie Expiry: {0!s}'.format(
             datetime.datetime.fromtimestamp(cookie_expiry).strftime('%Y-%m-%dT%H:%M:%SZ')))
+
+    def get_users(self):
+        # Establish DB connection
+        connection = create_connection()
+        data = execute_read_query(connection, select_all_query)
+        for person_data in data:
+            socials = person_data[9]
+            match = re.search("ig:.*,", socials)
+            if match:
+                ig_username = match.group().split(":")[1][:-1]
+                self.users.append(ig_username)
 
     def follow_user(self, username):
         # Get user_id
