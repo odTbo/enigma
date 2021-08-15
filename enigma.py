@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkinter_constants import *
 from db_connect import *
+from daily_check import daily_check
 
 # Establish DB connection
 connection = create_connection()
@@ -172,10 +173,14 @@ def search_window():
     top.mainloop()
 
 
+title = Label(root, text="ENIGMA", font=FONT_TITLE)
 btn1 = Button(root, width=25, text="Add new person", command=form_window)
 btn2 = Button(root, width=25, text="Edit/Delete a person", command=search_window)
+btn3 = Button(root, width=25, text="Daily Check", command=daily_check)
 
+title.grid(row=0, column=0, padx=15, pady=(15, 25))
 btn1.grid(row=1, column=0, pady=5)
 btn2.grid(row=2, column=0, pady=5)
+btn3.grid(row=3, column=0, pady=5)
 
 root.mainloop()
