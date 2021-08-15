@@ -35,7 +35,7 @@ class Instagram:
         self.login()
         for user in self.users:
             self.follow_user(user)
-            # self.like_all_posts(user)
+            self.like_all_posts(user)
 
     def login(self):
         print('Client version: {0!s}'.format(client_version))
@@ -97,14 +97,32 @@ class Instagram:
             print(f"[IG] Followed {username}.")
 
     def like_all_posts(self, username):
-        # Get id of all user's posts
-        results = self.api.username_feed(username)
-        posts = [item["id"] for item in results.get("items", [])]
-        for post in posts:
+        result = self.api.username_info(username)
+        user_id = result["user"]["pk"]
+
+        # ---------- Pagination with max_id ----------
+        updates = []
+        results = self.api.user_feed(user_id)
+        updates.extend(results.get('items', []))
+
+        next_max_id = results.get('next_max_id')
+        while next_max_id:
+            results = self.api.user_feed(user_id, max_id=next_max_id)
+            updates.extend(results.get('items', []))
+            # if len(updates) >= 30:  # get only first 30 or so
+            #     break
+            next_max_id = results.get('next_max_id')
+
+        updates.sort(key=lambda x: x['pk'])
+        # print list of IDs
+        # print(json.dumps([u['pk'] for u in updates], indent=2))
+
+        for post in updates:
+            # print(post["pk"], post["id"])
             # Like post
-            self.api.post_like(post)
+            self.api.post_like(post["id"])
             time.sleep(0.2)
-        print(f"[IG] Liked {username}'s all {len(posts)} posts.")
+        print(f"[IG] Liked {username}'s all {len(updates)} posts.")
 
     def to_json(self, python_object):
         if isinstance(python_object, bytes):
