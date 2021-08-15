@@ -35,7 +35,7 @@ class Instagram:
         self.login()
         for user in self.users:
             self.follow_user(user)
-            self.like_all_posts(user)
+            # self.like_all_posts(user)
 
     def login(self):
         print('Client version: {0!s}'.format(client_version))
