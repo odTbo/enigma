@@ -12,10 +12,10 @@ def instagram_check():
     instagram_names = []
     for person_data in data:
         socials = person_data[9]
-        ig_name = re.search("ig:.*,", socials)
-        if ig_name:
-            ig_name = ig_name.group().split(":")[1][:-1]
-            instagram_names.append(ig_name)
+        match = re.search("ig:.*,", socials)
+        if match:
+            ig_username = match.group().split(":")[1][:-1]
+            instagram_names.append(ig_username)
 
     if len(instagram_names) != 0:
         instagram = Instagram(instagram_names)
