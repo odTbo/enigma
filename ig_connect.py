@@ -90,6 +90,7 @@ class Instagram:
         print('Cookie Expiry: {0!s}'.format(
             datetime.datetime.fromtimestamp(cookie_expiry).strftime('%Y-%m-%dT%H:%M:%SZ')))
 
+    # Get IG Usernames from Database (self.users)
     def get_users(self):
         # Establish DB connection
         connection = create_connection()
@@ -101,6 +102,7 @@ class Instagram:
                 ig_username = match.group().split(":")[1][:-1]
                 self.users.append(ig_username)
 
+    # Follow IG User by username
     def follow_user(self, username):
         # Get user_id
         result = self.api.username_info(username)
@@ -110,6 +112,7 @@ class Instagram:
         if r["status"] == "ok":
             print(f"[IG] Followed {username}.")
 
+    # Like all User's posts
     def like_all_posts(self, username):
         result = self.api.username_info(username)
         user_id = result["user"]["pk"]

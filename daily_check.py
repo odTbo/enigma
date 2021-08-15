@@ -1,7 +1,11 @@
 from birthday_check import BirthdayChecker
-from ig_check import instagram_check
+from ig_connect import Instagram
 
 if __name__ == "__main__":
+    # Birthday/Nameday Checker
     birthday_checker = BirthdayChecker()
     birthday_checker.run()
-    instagram_check()
+
+    # Instagram Follower/Post-Liker
+    instagram = Instagram()
+    instagram.run()
