@@ -140,7 +140,7 @@ class Instagram:
         # print list of IDs
         # print(json.dumps([u['pk'] for u in updates], indent=2))
 
-        print(f"[IG] Liking posts for {username}.")
+        print(f"[IG] Liking posts for {username}...")
         for post in updates:
             # print(post["pk"], post["id"])
             # Like post
