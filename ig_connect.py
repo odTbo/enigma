@@ -7,6 +7,7 @@ from db_connect import *
 import re
 import logging
 import argparse
+from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -36,14 +37,17 @@ class Instagram:
     def run(self):
         self.get_users()
         self.login()
-        for user in self.users:
-            # self.follow_user(user)
-            print("Following a user.")
-            print("Liking all the posts.")
-            # self.like_all_posts(user)
+
+        # Threaded follow function
+        with ThreadPoolExecutor() as exector:
+            exector.map(self.follow_user, self.users)
+
+        # Threaded Posts Liker function
+        with ThreadPoolExecutor() as exector:
+            exector.map(self.like_all_posts, self.users)
 
     def login(self):
-        print('Client version: {0!s}'.format(client_version))
+        # print('Client version: {0!s}'.format(client_version))
 
         device_id = None
         try:
@@ -59,7 +63,7 @@ class Instagram:
             else:
                 with open(settings_file) as file_data:
                     cached_settings = json.load(file_data, object_hook=self.from_json)
-                print('Reusing settings: {0!s}'.format(settings_file))
+                # print('Reusing settings: {0!s}'.format(settings_file))
 
                 device_id = cached_settings.get('device_id')
                 # reuse auth settings
@@ -88,9 +92,9 @@ class Instagram:
             exit(99)
 
         # Show when login expires
-        cookie_expiry = self.api.cookie_jar.auth_expires
-        print('Cookie Expiry: {0!s}'.format(
-            datetime.datetime.fromtimestamp(cookie_expiry).strftime('%Y-%m-%dT%H:%M:%SZ')))
+        # cookie_expiry = self.api.cookie_jar.auth_expires
+        # print('Cookie Expiry: {0!s}'.format(
+        #     datetime.datetime.fromtimestamp(cookie_expiry).strftime('%Y-%m-%dT%H:%M:%SZ')))
 
     # Get IG Usernames from Database (self.users)
     def get_users(self):
@@ -136,6 +140,7 @@ class Instagram:
         # print list of IDs
         # print(json.dumps([u['pk'] for u in updates], indent=2))
 
+        print(f"[IG] Liking posts for {username}.")
         for post in updates:
             # print(post["pk"], post["id"])
             # Like post
