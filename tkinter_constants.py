@@ -1,5 +1,5 @@
 FONT = ("Calibri", 10, "normal")
-FONT_TITLE = ("WinCC_flexible", 30, "bold")
+FONT_TITLE = ("WinCC_flexible", 30, "normal")
 
 # ADD/EDIT PERSON FORM
 # ----------------(left, right)

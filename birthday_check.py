@@ -29,7 +29,7 @@ class BirthdayChecker:
             print("[Birthday Checker] No birthday/nameday matches found for today.")
 
     def check_birthday(self):
-
+        """Checks if a person's birthday or nameday in database matches current date."""
         for person_data in self.data:
             full_name = f"{person_data[1]} {person_data[2]}"
             birthday = person_data[4]
@@ -46,7 +46,7 @@ class BirthdayChecker:
                 self.get_notified = True
 
     def send_notification_email(self):
-
+        """Sends personal e-mail notification if anyone has a birthday/nameday."""
         self.mail_content = f"Subject: Birthday/Nameday {date}\n\n"
         for message in self.messages:
             self.mail_content += message

@@ -70,8 +70,8 @@ CREATE TABLE IF NOT EXISTS people (
 """
 
 
-# CREATE/ESTABLISH CONNECTION TO DB
 def create_connection(path="enigma.db"):
+    """Creates/Establishes connection to database."""
     connection = None
     try:
         connection = sqlite3.connect(path)
@@ -81,8 +81,8 @@ def create_connection(path="enigma.db"):
     return connection
 
 
-# EXECUTE WRITE QUERY
 def execute_query(connection, query, params=None):
+    """Executes Write Query"""
     cursor = connection.cursor()
     try:
         if params:
@@ -97,8 +97,8 @@ def execute_query(connection, query, params=None):
         return False
 
 
-# EXECUTE READ QUERY
 def execute_read_query(connection, query, params=None):
+    """Executes Read Query"""
     cursor = connection.cursor()
     result = None
     try:

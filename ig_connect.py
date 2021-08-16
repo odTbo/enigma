@@ -9,10 +9,9 @@ import logging
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 from dotenv import load_dotenv
-
-load_dotenv()
-
 # https://github.com/ping/instagram_private_api
+# pip install git+https://git@github.com/ping/instagram_private_api.git@1.6.0
+# pip install git+https://git@github.com/ping/instagram_private_api.git@1.6.0 --upgrade
 try:
     from instagram_private_api import (
         Client, ClientError, ClientLoginError,
@@ -25,6 +24,8 @@ except ImportError:
         Client, ClientError, ClientLoginError,
         ClientCookieExpiredError, ClientLoginRequiredError,
         __version__ as client_version)
+
+load_dotenv()
 
 
 class Instagram:
@@ -47,6 +48,7 @@ class Instagram:
             exector.map(self.like_all_posts, self.users)
 
     def login(self):
+        """Establishes connection to Instagram API."""
         # print('Client version: {0!s}'.format(client_version))
 
         device_id = None
@@ -96,8 +98,8 @@ class Instagram:
         # print('Cookie Expiry: {0!s}'.format(
         #     datetime.datetime.fromtimestamp(cookie_expiry).strftime('%Y-%m-%dT%H:%M:%SZ')))
 
-    # Get IG Usernames from Database (self.users)
     def get_users(self):
+        """Get IG Usernames from Database (self.users)"""
         # Establish DB connection
         connection = create_connection()
         data = execute_read_query(connection, select_all_query)
@@ -108,8 +110,8 @@ class Instagram:
                 ig_username = match.group().split(":")[1][:-1]
                 self.users.append(ig_username)
 
-    # Follow IG User by username
     def follow_user(self, username):
+        """Follow IG User by username."""
         # Get user_id
         result = self.api.username_info(username)
         user_id = result["user"]["pk"]
@@ -118,8 +120,9 @@ class Instagram:
         if r["status"] == "ok":
             print(f"[IG] Followed {username}.")
 
-    # Like all User's posts
     def like_all_posts(self, username):
+        """Like all User's posts."""
+        # Get user id
         result = self.api.username_info(username)
         user_id = result["user"]["pk"]
 

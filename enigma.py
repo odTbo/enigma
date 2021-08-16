@@ -15,12 +15,16 @@ root.config(padx=55, pady=55)
 root.eval('tk::PlaceWindow . center')
 root.title("Enigma")
 
+x = root.winfo_x()
+y = root.winfo_y()
 
-# Add/edit person form
+
 def form_window(to_edit=None):
+    """Form window to add new person to database or edit an existing one."""
     top = Toplevel(root)
     top.config(padx=30, pady=30)
     top.title("Form")
+    top.geometry("+%d+%d" % (x - 50, y - 100))
 
     # ------------------ Labels ----------------- #
     name_lbl = Label(top, text="Name", font=FONT)
@@ -74,8 +78,8 @@ def form_window(to_edit=None):
         phone_entry.insert(0, to_edit[8])
         socials_entry.insert(0, to_edit[9])
 
-    # Clears form entries
     def clear_form():
+        """Used to clear all entries in form."""
         email_entry.delete(0, END)
         name_entry.delete(0, END)
         surname_entry.delete(0, END)
@@ -86,8 +90,8 @@ def form_window(to_edit=None):
         phone_entry.delete(0, END)
         socials_entry.delete(0, END)
 
-    # Insert Data into DB
     def insert_entry():
+        """Inserts form data into database."""
         name = name_entry.get()
         surname = surname_entry.get()
         email = email_entry.get()
@@ -118,9 +122,11 @@ def form_window(to_edit=None):
 
 # Search for person window
 def search_window():
+    """Search window with input of either full name or e-mail. Opens up a prepopulated form window."""
     top = Toplevel(root)
     top.config(padx=40, pady=25)
     top.title("Search")
+    top.geometry("+%d+%d" % (x - 50, y - 100))
 
     # -------------------- Labels ------------------------- #
     desc = Label(top, text="Search by Name/E-mail", font=FONT)
@@ -136,23 +142,24 @@ def search_window():
     email_entry = Entry(top, width=40)
     email_entry.grid(row=2, column=1, pady=5)
 
-    # Search Function
     # TODO Clean up the logic
     def search_for():
-        # try:
+        """Searches for person in database based on either full name or e-mail."""
+        # Full name case
         if name_entry.get():
             full_name = name_entry.get().split(" ")
             full_name = [name.title() for name in full_name]
             params = tuple(full_name)
             data = execute_read_query(connection, select_name_query, params)
             if data:
-                print(data)
+                # print(data)
                 top.destroy()
                 top.update()
                 form_window(to_edit=data[0])
                 return
             else:
                 messagebox.showinfo(title="Oops!", message="No matches found.")
+        # E-mail case
         if email_entry.get():
             email = email_entry.get()
             params = (email,)
